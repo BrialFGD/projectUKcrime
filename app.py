@@ -6,6 +6,7 @@ from user_inputs import user_lat_lon_address, get_lsoa_city_region
 
 pu = False
 
+
 # title
 st.title('UK crime radar')
 
