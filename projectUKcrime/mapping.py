@@ -1,56 +1,59 @@
 import pandas as pd 
 import numpy as np
-import os
-import glob
 import folium
-import folium.plugins
-import datetime
 from folium.plugins import HeatMapWithTime
-import statistics
-import requests
+import haversine as hs
+from user_inputs import hs_distance
+
+##user_address ---> user_location [coordinates] ---> (police_area,city,coordinates)
 
 
-def heat_map(crime_type,area):
-    crime_type = crime_type.capitalize()
-    area_df = create_area_df(area)
-    individual_crime_df = area_df[area_df["Crime type"]==crime_type][['Longitude','Latitude']]
-    individual_crime_df=individual_crime_df.dropna()
-    lat_list = individual_crime_df['Latitude'].tolist()
-    long_list = individual_crime_df['Longitude'].tolist()
+
+def heat_map(area_df,u_lat,u_long,user_address,radius = None, city = None, crime = "All"):
+    area_df['distance'] = area_df[['Longitude','Latitude']].apply(lambda x: hs_distance(x[1], x[0], lat2=u_lat, long2=u_long),axis=1)
+    if city != None: 
+        area_df = area_df[area_df["LSOA name"].str.contains(city)]
+    if radius!= None:
+        area_df = area_df[area_df["distance"]<= radius]
+    if crime != "All":
+        area_df = area_df[area_df["Crime type"] == crime]
+    
+    lat_list = area_df['Latitude'].tolist()
+    long_list = area_df['Longitude'].tolist()
     individual_crime_coordinates = set(zip(lat_list,long_list))
-    map_centre = (statistics.mean(lat_list), statistics.mean(long_list))
-    base_map = folium.Map(location=map_centre, zoom_start=10)
-    
-    title_html = '''
-             <h3 align="center" style="font-size:20px"><b>{title} in {location} from 6/2018 to 5/2021</b></h3>
-             '''.format(title=crime_type.title(),location=area.title())
-    base_map.get_root().html.add_child(folium.Element(title_html))
-    
-                                       
-    folium.plugins.HeatMap(individual_crime_coordinates,overlay=True,min_opacity=0.01).add_to(base_map)
-    display(base_map)
+    map_centre = (u_lat,u_long)
+    base_map = folium.Map(location=map_centre, zoom_start=15)
+    folium.Marker(location=(u_lat,u_long),popup=user_address).add_to(base_map)
+    folium.plugins.HeatMap(individual_crime_coordinates,overlay=True,min_opacity=0.1).add_to(base_map)
+    return base_map.save(f"./maps/{crime}_in_{city}_map.html")
 
-def heat_map_time(crime_type,area):
-    crime_type = crime_type.capitalize()
-    area_df = create_area_df(area)
-    crime_area_df= area_df[area_df["Crime type"]==crime_type][['Longitude','Latitude','Month']]
-    date_index = list(crime_area_df['Month'].sort_values().unique())
-    crime_area_df["Time"] = crime_area_df["Month"].map(lambda x:x.replace('-',''))
-    crime_area_df["Time"] = crime_area_df["Time"].map(lambda x:int(x))
-    crime_area_df = crime_area_df[["Longitude","Latitude","Time"]]
-    crime_area_df = crime_area_df.dropna()
-    date_list = list(crime_area_df["Time"].unique())
     
-   
+
+def heat_map_time(area_df,u_lat,u_long,user_address,radius = None, city = None, crime = "All"):
+    area_df['distance'] = area_df[['Longitude','Latitude']].apply(lambda x: hs_distance(x[1], x[0], lat2=u_lat, long2=u_long),axis=1)
+    if crime != None:
+        area_df = area_df[area_df["Crime type"] == crime]
+    if radius!= None:
+        area_df = area_df[area_df["distance"]<= radius]
+    if city != None: 
+        area_df = area_df[area_df["LSOA name"].str.contains(city)]
+    date_index = list(area_df['Month'].sort_values().unique())
+    area_df["Time"] = area_df["Month"].map(lambda x:x.replace('-',''))
+    area_df["Time"] = area_df["Time"].map(lambda x:int(x))
+    area_df = area_df[["Longitude","Latitude","Time"]]
+    area_df = area_df.dropna()
+    date_list = list(area_df["Time"].unique())
     lat_long_list = []
     for i in date_list:
         temp=[]
-        for index,instance in crime_area_df[crime_area_df['Time'] == i].iterrows():
+        for index,instance in area_df[area_df['Time'] == i].iterrows():
             temp.append([instance['Latitude'],instance['Longitude']])
         lat_long_list.append(temp)
-    
-    map_centre = (statistics.mean(crime_area_df['Latitude'].tolist()),statistics.mean(crime_area_df['Longitude'].tolist()))
-    base_map = folium.Map(location=map_centre, zoom_start=10)
-    HeatMapWithTime(lat_long_list,auto_play=True,position='bottomright',min_opacity=0.1,index=date_index).add_to(base_map)
-    display(base_map)
+    map_centre = (u_lat,u_long)
+    base_map = folium.Map(location=map_centre, zoom_start=15)
+    folium.Marker(location=(u_lat,u_long),popup=user_address).add_to(base_map)
+    HeatMapWithTime(lat_long_list,auto_play=False,position='bottomright',min_opacity=0.1,index=date_index,max_speed=1).add_to(base_map)
+    return base_map.save(f"./maps/{crime}_in_{city}_map_time.html")
+ 
+
     

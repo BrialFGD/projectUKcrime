@@ -1,7 +1,8 @@
 import requests
+import pandas as pd
 
 # !!! Need to be updated for productions.
-raw_data_filepath = '**/**/'
+raw_data_filepath = '../raw_data/'
 
 #get lists of police regions directly from API
 def get_police_regions():
