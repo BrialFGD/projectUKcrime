@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 
 # !!! Need to be updated for productions.
-raw_data_filepath = '../raw_data/'
+raw_data_filepath = '../projectUKcrime/raw_data/'
 
 #get lists of police regions directly from API
 def get_police_regions():
@@ -22,12 +22,8 @@ def find_area_files(file_path,area):
 
 #
 def create_area_df(area):
-    dfs = []
-    for file in find_area_files(area): 
-        dfs.append(pd.read_csv(file))
-    area_df = pd.DataFrame()
-    for i in range(len(dfs)): 
-        area_df = pd.concat([area_df,dfs[i]]) 
+    area_path = f"{raw_data_filepath}{area}.pkl"
+    area_df = pd.read_pickle(area_path)
     return area_df
 
 # loads the LSOA DF !!!!!! Need to update the file path at production
