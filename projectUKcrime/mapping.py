@@ -3,7 +3,7 @@ import numpy as np
 import folium
 from folium.plugins import HeatMapWithTime
 import haversine as hs
-from user_inputs import hs_distance
+from projectUKcrime.user_inputs import hs_distance
 
 ##user_address ---> user_location [coordinates] ---> (police_area,city,coordinates)
 
@@ -25,7 +25,7 @@ def heat_map(area_df,u_lat,u_long,user_address,radius = None, city = None, crime
     base_map = folium.Map(location=map_centre, zoom_start=15)
     folium.Marker(location=(u_lat,u_long),popup=user_address).add_to(base_map)
     folium.plugins.HeatMap(individual_crime_coordinates,overlay=True,min_opacity=0.1).add_to(base_map)
-    return base_map.save(f"./maps/{crime}_in_{city}_map.html")
+    return base_map
 
     
 
