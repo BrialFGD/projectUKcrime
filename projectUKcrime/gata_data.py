@@ -1,7 +1,8 @@
 import requests
+import pandas as pd
 
 # !!! Need to be updated for productions.
-raw_data_filepath = '../raw_data/'
+raw_data_filepath = '../projectUKcrime/raw_data/'
 
 #get lists of police regions directly from API
 def get_police_regions():
@@ -19,19 +20,14 @@ def find_area_files(file_path,area):
     files = glob.glob(f'{file_path}/**/*{area}-street.csv',recursive = True)
     return files
 
-# Get the DataFrame for a given force from pickles
-def create_area_df(force):
-    lsoa_df = get_lsoa_data()
-    lsoa_df = lsoa_df[['force','file_name']].drop_duplicates()
-    lsoa_df = lsoa_df.reset_index()
-    indx = lsoa_df[lsoa_df['force']==force].index.values[0]
-    file_name = lsoa_df.iloc[indx]['file_name']
-    area_path = raw_data_filepath+file_name+'.pkl'
+#
+def create_area_df(area):
+    area_path = f"{raw_data_filepath}{area}.pkl"
     area_df = pd.read_pickle(area_path)
     return area_df
 
 # loads the LSOA DF !!!!!! Need to update the file path at production
 def get_lsoa_data():
     lsoapkl_path = raw_data_filepath+'lsoa_data.pkl'
-    lsoa_df = pd.read_pickle(lsoapkl_path)
-    return lsoa_df
+    lsao_df = pd.read_pickle(lsoapkl_path)
+    return lsao_df
