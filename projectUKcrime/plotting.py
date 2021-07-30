@@ -25,7 +25,13 @@ def get_city_population(force, city = None):
     lsoa_df = lsoa_df.loc[lsoa_df['force'] == force]
     if city != None:
         lsoa_df = lsoa_df.loc[lsoa_df['city'] == city]
-    
+    return lsoa_df['pop'].sum()
+
+def get_district_population(force, district = None):
+    lsoa_df = get_lsoa_data()
+    lsoa_df = lsoa_df.loc[lsoa_df['force'] == force]
+    if district != None:
+        lsoa_df = lsoa_df.loc[lsoa_df['lsoa_name'] == district]
     return lsoa_df['pop'].sum()
 
 def get_crime_rate(force,city = None, crime = None):
