@@ -53,7 +53,6 @@ def heat_map_time(area_df,u_lat,u_long,user_address,radius = None, city = None, 
     base_map = folium.Map(location=map_centre, zoom_start=15)
     folium.Marker(location=(u_lat,u_long),popup=user_address).add_to(base_map)
     HeatMapWithTime(lat_long_list,auto_play=False,position='bottomright',min_opacity=0.1,index=date_index,max_speed=1).add_to(base_map)
-    return base_map.save(f"./maps/{crime}_in_{city}_map_time.html")
+    return base_map
  
 
-    
