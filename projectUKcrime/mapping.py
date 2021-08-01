@@ -3,7 +3,8 @@ import numpy as np
 import folium
 from folium.plugins import HeatMapWithTime
 import haversine as hs
-from projectUKcrime.user_inputs import hs_distance
+
+from ProjectUKcrime.user_inputs import hs_distance
 
 ##user_address ---> user_location [coordinates] ---> (police_area,city,coordinates)
 

@@ -5,7 +5,7 @@ import requests
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from projectUKcrime.gata_data import create_area_df, get_lsoa_data
+from gata_data import create_area_df, get_lsoa_data
 
 #function that returns crime count by month for a given city & crime type
 def get_crime_count(area_df,city = None, crime = None):
