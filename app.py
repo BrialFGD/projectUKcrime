@@ -24,9 +24,8 @@ with st.form(key="my_form"):
    u_radius = st.sidebar.selectbox(
    'Please choose an area size for displaying crime data?',
    ('1', '5', '10','50'))
-   crime_type = st.sidebar.selectbox(
-   'Please choose a crime type?',
-   ('Anti-social behaviour',
+
+   crime_type_list = ['Anti-social behaviour',
    'Bicycle theft',
    'Burglary',
    'Criminal damage and arson',
@@ -38,7 +37,19 @@ with st.form(key="my_form"):
    'Shoplifting',
    'Theft from the person',
    'Vehicle crime',
-   'Violence and sexual offences'))
+   'Violence and sexual offences']
+   
+   crime_type = st.multiselect("Plsease choose crime type(s):",crime_type_list)
+
+   all_options = st.checkbox("Select all options")
+
+   if all_options:
+    crime_type = crime_type_list
+
+   crime_type
+   
+   
+   
    submit_button = st.form_submit_button(label="Submit")
 if submit_button:
    st.write("Generating your data")
@@ -61,11 +72,11 @@ u_radius = float(u_radius)
 
 
 if map_type == "Static":
-   base_map = heat_map(area_df,u_lat,u_lon,user_address=u_full_add,radius = u_radius, crime = crime_type)
+   base_map = heat_map(area_df,u_lat,u_lon,user_address=u_full_add,radius = u_radius, crime_list = crime_type)
 else:
    base_map = heat_map_time(area_df,u_lat,u_lon,user_address=u_full_add,radius = u_radius, crime = crime_type)
-crime_plot = plot_relative_crime_rate(area_df,city,crime_type)
-crime_table_display = get_crime_type_rate(area_df,city=city,district=lsoa)
+#crime_plot = plot_relative_crime_rate(area_df,city,crime_type)
+#crime_table_display = get_crime_type_rate(area_df,city=city,district=lsoa)
 #load the LSOA data to identify user LSOA, City, Force
 #lsoa_df = get_lsoa_data()
 #u_lsoa_df, u_lsoa, u_city, u_force = get_LSOA_city_region(lsoa_df,u_lon,u_lat)
@@ -75,5 +86,5 @@ crime_table_display = get_crime_type_rate(area_df,city=city,district=lsoa)
 
 if user_add:
    folium_static(base_map)
-   st.pyplot(crime_plot)
-   st.write(crime_table_display)
+   #st.pyplot(crime_plot)
+   #st.write(crime_table_display)
