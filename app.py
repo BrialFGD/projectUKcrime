@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 from projectUKcrime.gata_data import get_lsoa_data, create_area_df
-from projectUKcrime.user_inputs import user_lat_lon_address, get_LSOA_city_region
+from projectUKcrime.user_inputs import user_lat_lon_address, get_LSOA_city_region,hs_distance
 from projectUKcrime.mapping import heat_map, heat_map_time
 from projectUKcrime.plotting import plot_relative_crime_rate,get_crime_type_rate
 import folium
