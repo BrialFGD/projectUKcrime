@@ -3,29 +3,28 @@ import numpy as np
 import folium
 from folium.plugins import HeatMapWithTime
 import haversine as hs
-
-from ProjectUKcrime.user_inputs import hs_distance
-
-##user_address ---> user_location [coordinates] ---> (police_area,city,coordinates)
+from projectUKcrime.user_inputs import hs_distance
 
 
 
-def heat_map(area_df,u_lat,u_long,user_address,radius = None, city = None, crime = "All"):
+## crime is now a list to enable filtering by multiple crimes
+def heat_map(area_df,u_lat,u_long,user_address,radius = None, city = None, crime_list = "All"):
     area_df['distance'] = area_df[['Longitude','Latitude']].apply(lambda x: hs_distance(x[1], x[0], lat2=u_lat, long2=u_long),axis=1)
     if city != None: 
         area_df = area_df[area_df["LSOA name"].str.contains(city)]
     if radius!= None:
         area_df = area_df[area_df["distance"]<= radius]
-    if crime != "All":
-        area_df = area_df[area_df["Crime type"] == crime]
-    
-    lat_list = area_df['Latitude'].tolist()
-    long_list = area_df['Longitude'].tolist()
-    individual_crime_coordinates = set(zip(lat_list,long_list))
+    if crime_list != "All":
+        area_df = area_df[area_df["Crime type"].isin(crime_list)]
     map_centre = (u_lat,u_long)
     base_map = folium.Map(location=map_centre, zoom_start=15,width=700,height=400)
     folium.Marker(location=(u_lat,u_long),popup=user_address).add_to(base_map)
-    folium.plugins.HeatMap(individual_crime_coordinates,overlay=True,min_opacity=0.1).add_to(base_map)
+    for crime in crime_list: 
+        area_df = area_df[area_df["Crime type"]== crime]
+        lat_list = area_df['Latitude'].tolist()
+        long_list = area_df['Longitude'].tolist()
+        individual_crime_coordinates = set(zip(lat_list,long_list))
+        folium.plugins.HeatMap(individual_crime_coordinates,overlay=True,min_opacity=0.1).add_to(base_map)
     return base_map
 
     
