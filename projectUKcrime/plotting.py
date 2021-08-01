@@ -5,7 +5,7 @@ import requests
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from gata_data import create_area_df
+from projectUKcrime.gata_data import create_area_df, get_lsoa_data
 
 #function that returns crime count by month for a given city & crime type
 def get_crime_count(area_df,city = None, crime = None):
@@ -37,8 +37,9 @@ def get_district_population(force, district = None):
 
 def get_city_crime_rate(area_df,city = None, crime = None):
     force_df = area_df
-    crime_count_df = get_crime_count(force_df = force_df,city = city, crime = crime)
-    population = get_population(force = force, city = city)
+    force = list(force_df['Falls within'])[0]
+    crime_count_df = get_crime_count(area_df = force_df,city = city, crime = crime)
+    population = get_city_population(force = force, city = city)
     crime_count_df['crime_rate']=crime_count_df['crime_count'].apply(lambda x: x/population)
     crime_count_df.drop(columns = 'crime_count', inplace = True)
     return crime_count_df
@@ -47,23 +48,26 @@ def plot_relative_crime_rate(area_df,city = None, crime = None):
     force_df = area_df
     
     force_df['city']=force_df['LSOA name'].apply(lambda x: x[:-5])
-    force_crime_rate = get_city_crime_rate(force, crime = crime)
+    force_crime_rate = get_city_crime_rate(force_df, crime = crime)
     if city != None:
-        city_crime_rate = get_city_crime_rate(force,city = city, crime = crime)
+        city_crime_rate = get_city_crime_rate(force_df,city = city, crime = crime)
         city_crime_rate.columns = ['city_crime_rate']
         city_crime_rate = city_crime_rate.reset_index()
         force_crime_rate = force_crime_rate.reset_index()
         force_crime_rate = force_crime_rate.merge(city_crime_rate, on = 'Month' )
         force_crime_rate = force_crime_rate.set_index('Month')
-    plot = force_crime_rate.plot();
-    return plot
+    fig,ax = plt.subplots()
+    ax = sns.lineplot(data=force_crime_rate)
+    return fig
 
 def get_crime_type_rate(area_df, city = None, district = None):
     #pull database for the force
     force_df = area_df
+    region = list(force_df['Falls within'])[0]
     
     #clean NA if any
     force_df = force_df.dropna(subset = ['LSOA name','Crime type'],axis = 0)
+    
     
     #Create city columns
     force_df['city']=force_df['LSOA name'].apply(lambda x: x[:-5])
@@ -87,9 +91,9 @@ def get_crime_type_rate(area_df, city = None, district = None):
     region_crimes = region_crimes.merge(city_crimes, on = 'Crime types').merge(district_crimes, on = 'Crime types')
     
     #get populations:
-    region_pop = get_city_population(region1)
-    city_pop = get_city_population(region1, city1)
-    district_pop = get_district_population(region1, district1)
+    region_pop = get_city_population(region)
+    city_pop = get_city_population(region, city)
+    district_pop = get_district_population(region, district)
     
     #Normalize Region-City-District to population:
     region_crimes['region_rate']=region_crimes['region_count'].apply(lambda x: round(x/region_pop*1000,2))
