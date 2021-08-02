@@ -96,7 +96,7 @@ def get_crime_type_rate(area_df, city = None, district = None):
     #Normalize Region-City-District to population:
     region_crimes['region_rate']=region_crimes['region_count'].apply(lambda x: round(x/region_pop*1000,2))
     region_crimes['city_rate']=region_crimes['city_count'].apply(lambda x: round(x/city_pop*1000,2))
-    region_crimes['district_rate']=region_crimes['district_count'].apply(lambda x: round(x/city_pop*1000,2))
+    region_crimes['district_rate']=region_crimes['district_count'].apply(lambda x: round(x/district_pop*1000,2))
     
     #drop count columns to keep rates:
     region_crimes = region_crimes.drop(columns = ['region_count','city_count','district_count'])
