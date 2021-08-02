@@ -1,11 +1,9 @@
 import pandas as pd 
 import numpy as np
-import statistics
-import requests
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from projectUKcrime.gata_data import create_area_df, get_lsoa_data
+from projectUKcrime.gata_data import get_lsoa_data
 
 #function that returns crime count by month for a given city & crime type
 def get_crime_count(area_df,city = None, crime = None):
@@ -98,7 +96,7 @@ def get_crime_type_rate(area_df, city = None, district = None):
     #Normalize Region-City-District to population:
     region_crimes['region_rate']=region_crimes['region_count'].apply(lambda x: round(x/region_pop*1000,2))
     region_crimes['city_rate']=region_crimes['city_count'].apply(lambda x: round(x/city_pop*1000,2))
-    region_crimes['district_rate']=region_crimes['district_count'].apply(lambda x: round(x/city_pop*1000,2))
+    region_crimes['district_rate']=region_crimes['district_count'].apply(lambda x: round(x/district_pop*1000,2))
     
     #drop count columns to keep rates:
     region_crimes = region_crimes.drop(columns = ['region_count','city_count','district_count'])
