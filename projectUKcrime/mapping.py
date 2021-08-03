@@ -27,15 +27,17 @@ def heat_map(area_df,u_lat,u_long,user_address,radius = None, city = None, crime
     
     
     map_centre = (u_lat,u_long)
-    base_map = folium.Map(location=map_centre, zoom_start=zoom,width=800,height=755)
+    base_map = folium.Map(location=map_centre, zoom_start=zoom,width=800,height=700,title=None)
     folium.Marker(location=(u_lat,u_long),popup=user_address).add_to(base_map)
     for crime in crime_list: 
         area_df_ = area_df[area_df["Crime type"]== crime]
         lat_list = area_df_['Latitude'].tolist()
         long_list = area_df_['Longitude'].tolist()
         individual_crime_coordinates = set(zip(lat_list,long_list))
-        folium.plugins.HeatMap(individual_crime_coordinates,overlay=True,min_opacity=0.1).add_to(base_map)
-    folium.LayerControl().add_to(base_map)   
+        layer = folium.plugins.HeatMap(individual_crime_coordinates,overlay=True,min_opacity=0.1,show=False)
+        layer.layer_name = f"{crime}"
+        base_map.add_child(layer)
+    folium.LayerControl(position='topright',collapsed=False).add_to(base_map)   
     return base_map
 
     
@@ -72,7 +74,7 @@ def heat_map_time(area_df,u_lat,u_long,user_address,radius = None, city = None, 
             temp.append([instance['Latitude'],instance['Longitude']])
         lat_long_list.append(temp)
     map_centre = (u_lat,u_long)
-    base_map = folium.Map(location=map_centre, zoom_start=zoom,width=800,height=755)
+    base_map = folium.Map(location=map_centre, zoom_start=zoom,width=800,height=700,title=None)
     folium.Marker(location=(u_lat,u_long),popup=user_address).add_to(base_map)
     HeatMapWithTime(lat_long_list,auto_play=False,position='bottomright',min_opacity=0.1,index=date_index,max_speed=1).add_to(base_map)
     return base_map

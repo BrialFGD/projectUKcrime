@@ -1,6 +1,8 @@
-from projectUKcrime.plotting import plot_relative_crime_rate,get_crime_type_rate
+from projectUKcrime.plotting import plot_relative_crime_rate,get_crime_type_rate,plot_relative_crime_rate_bar
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import streamlit as sns
 from projectUKcrime.gata_data import get_lsoa_data, create_area_df
 from projectUKcrime.user_inputs import user_lat_lon_address, get_LSOA_city_region,hs_distance
 
@@ -9,7 +11,8 @@ from projectUKcrime.user_inputs import user_lat_lon_address, get_LSOA_city_regio
 
 
 def app():
-    #st.title('UK crime heatmaps')
+    st.title('UK crime Data')
+    st.write('All crime rates are given as crime incidences per 1000 residents per month')
 
 #user inputs
     with st.form(key="my_form"):
@@ -43,14 +46,25 @@ def app():
     lsoa_df = get_lsoa_data()
     df, lsoa, city, region = get_LSOA_city_region(lsoa_df,u_lon,u_lat)
     area_df = create_area_df(region)
-
     crime_plot = plot_relative_crime_rate(area_df,city,crime_type)
-    crime_table_display = get_crime_type_rate(area_df,city=city,district=lsoa)
+    plt.legend([f"{crime_type} in {city}",f"{crime_type} in {region} Area",],fontsize=25)
+    
+    
+    #crime_table_display = get_crime_type_rate(area_df,city=city,district=lsoa)
+    #crime_table_display = crime_table_display.set_index('Crime types')
+    crime_table_plot = plot_relative_crime_rate_bar(area_df,city=city,district=lsoa)
+    #plt.legend([f"{city}",f"{region}",],fontsize=25)
+    
+    #crime_table_display = crime_table_display.rename(columns={'region_rate':f"{region} crime rate",'city_rate':f"{city} crime rate",'district_rate':f"Local police force area{lsoa}"})
+    #crime_table_display.style.set_properties(color="black", align="centre")
+    #crime_table_display = crime_table_display.style.set_properties(**{'background-color': 'white',
+                           #'color': 'black',
+                           #'border-color': 'white'})
     
 
-
     if user_add:
-        st.write(crime_plot)
-        st.write(crime_table_display)
+        st.pyplot(crime_plot)
+        #st.dataframe(crime_table_display)
+        st.pyplot(crime_table_plot)
         
 

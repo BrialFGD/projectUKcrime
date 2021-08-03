@@ -10,7 +10,7 @@ PAGES = {"Home":app_home,
          "Crime Data":app_plotting
     
 }
-st.sidebar.title('Navigation')
-selection = st.sidebar.radio("Go to", list(PAGES.keys()))
+st.sidebar.title('UK Crime Tracker')
+selection = st.sidebar.radio("", list(PAGES.keys()))
 page = PAGES[selection]
 page.app()
