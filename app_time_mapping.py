@@ -54,4 +54,4 @@ def app():
 
 
     if user_add:
-        folium_static(base_map,width=800,height=740)
+        folium_static(base_map,width=800,height=700)

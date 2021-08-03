@@ -35,7 +35,7 @@ def app():
             'Vehicle crime',
             'Violence and sexual offences']
    
-            crime_type = st.sidebar.multiselect("Plsease choose crime type(s):",crime_type_list)
+            crime_type = st.sidebar.multiselect("Please choose crime type(s):",crime_type_list)
 
             submit_button = st.form_submit_button(label="Submit")
 
@@ -56,5 +56,5 @@ def app():
 
 
     if user_add:
-        folium_static(base_map,width=800,height=740)
+        folium_static(base_map,width=800,height=700)
    
