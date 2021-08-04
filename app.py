@@ -26,7 +26,7 @@ with st.sidebar:
         ('1', '5', '10','50'))
   
         crime_type_list = ['Anti-social behaviour','Bicycle theft','Burglary','Criminal damage and arson','Drugs','Other theft','Possession of weapons','Public order','Robbery','Shoplifting','Theft from the person','Vehicle crime','Violence and sexual offences']
-        crime_type = st.sidebar.selectbox("Please choose crime type:",crime_type_list)
+        crime_type = st.sidebar.multiselect("Please choose crime type:",crime_type_list)
 
         #move to choose visualization:
         selection = st.sidebar.radio("", list(PAGES.keys()))

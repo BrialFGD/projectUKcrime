@@ -14,4 +14,4 @@ def app():
                         user_address=st.session_state.u_full_add,
                         radius = st.session_state.u_radius, 
                         crime_list = st.session_state.crime_type)
-    folium_static(base_map,width=800,height=495)
+    folium_static(base_map,width=800,height=550)
