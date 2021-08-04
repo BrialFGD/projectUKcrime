@@ -3,7 +3,9 @@ import streamlit as st
 
 def app():
     #Prepare user inputs to prediction model format
-    data = [[st.session_state.u_lon, st.session_state.u_lat,st.session_state.crime_type[0]]]
+    data = [[st.session_state.u_lon,
+             st.session_state.u_lat,
+             st.session_state.crime_type]]
     X_df = pd.DataFrame(data, columns = ['lon', 'lat','crime'])
     
     #load the fitted model pickle

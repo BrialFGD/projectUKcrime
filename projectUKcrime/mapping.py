@@ -15,7 +15,7 @@ def heat_map(area_df,u_lat,u_long,user_address,radius = None, city = None, crime
     if radius!= None:
         area_df = area_df[area_df["distance"]<= radius]
     if crime_list != "All":
-        area_df = area_df[area_df["Crime type"].isin(crime_list)]
+        area_df = area_df[area_df["Crime type"] == crime_list]
     if radius == 1: 
         zoom = 15
     elif radius == 5: 
