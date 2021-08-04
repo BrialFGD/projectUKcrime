@@ -8,8 +8,8 @@ import app_predict
 PAGES = {"Home":app_home,
          "Crime HeatMaps":app_heat_mapping,
          "Crime TimeSeries Map":app_time_mapping,
-         "Crime Data":app_plotting,
-         "Crime Outcome Prediction":app_predict
+         "Crime Data":app_plotting
+        #  "Crime Outcome Prediction":app_predict
     
 }
 st.sidebar.title('UK Crime Tracker')
