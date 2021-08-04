@@ -12,11 +12,13 @@ haversine
 datetime
 statistics
 requests
+streamlit
 
 # maps & plots
 folium
 seaborn
 matplotlib
+streamlit_folium
 
 # API
 gcsfs
