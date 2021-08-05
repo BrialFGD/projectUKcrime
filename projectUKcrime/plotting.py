@@ -56,12 +56,12 @@ def plot_relative_crime_rate(area_df,city = None, crime = None):
         #force_crime_rate = force_crime_rate.set_index('Month')
     
     sns.set_style("dark")
-    fig = plt.figure(figsize=(25,20))
+    fig = plt.figure(figsize=(40,16))
     ax = sns.lineplot(data=force_crime_rate[['city_crime_rate','Month']],x="Month",y="city_crime_rate",palette=['red'], linewidth=2.5)
     ax = sns.lineplot(data=force_crime_rate[['crime_rate','Month']],x="Month",y="crime_rate",palette=['blue'], linewidth=2.5)
     ax.set_xticks(ax.get_xticks()[::3])
-    plt.xticks(fontsize=20,rotation=45)
-    plt.yticks(fontsize=20)
+    plt.xticks(fontsize=30,rotation=45)
+    plt.yticks(fontsize=30)
     plt.xlabel("")
     plt.ylabel("")
     
@@ -117,19 +117,21 @@ def get_crime_type_rate(area_df, city = None, district = None):
     #region_crimes = region_crimes.drop(columns='district_rate')
     region_crimes = pd.concat([city_crimes,region_crimes])
     region_crimes = region_crimes.drop(columns="count")
+    #region_crimes = region_crimes.sort_values(by = ['rate'], ascending=False)
     return region_crimes
 
 def plot_relative_crime_rate_bar(area_df, city = None, district = None):
     region_df = get_crime_type_rate(area_df, city, district)
+    #region_df = region_df.sort_values(by = ['rate'], ascending=False)
     sns.set_style("dark")
-    fig = plt.figure(figsize=(25,20))
+    fig = plt.figure(figsize=(40,20))
     ax = sns.barplot(data=region_df,y="Crime types",x="rate",hue="category")
     plt.legend(loc='best',fontsize=25)
-    plt.setp(ax.get_legend().get_texts(), fontsize='25')
+    plt.setp(ax.get_legend().get_texts(), fontsize='30')
     plt.setp(ax.get_legend().get_title(), fontsize='0')
    
-    plt.xticks(fontsize=25)
-    plt.yticks(fontsize=25)
+    plt.xticks(fontsize=30)
+    plt.yticks(fontsize=30)
     plt.xlabel("")
     plt.ylabel("")
     return fig
