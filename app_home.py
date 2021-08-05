@@ -14,6 +14,7 @@ def app():
     -**Crime Outcome Prediction** uses machine learning to predict the most likely outcome of a crime in your chosen area.
 
     The UK Crime Tracker was created by Brial, Blair and Andrew at Le Wagon Shanghai.
+    """)
 
     
     
