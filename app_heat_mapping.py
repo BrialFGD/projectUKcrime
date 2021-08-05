@@ -6,7 +6,7 @@ import folium
 from streamlit_folium import folium_static
 
 def app():
-    st.title('UK crime heatmaps')
+    st.markdown(f'**Crime heatmaps within {st.session_state.u_radius}km of your chosen location**')
 
     base_map = heat_map(st.session_state.area_df,
                         st.session_state.u_lat,

@@ -47,7 +47,7 @@ def app():
     
     predict_view_plot = plot_crime_probability_bar_chart(predict_view)
     
-    st.write(f"The graph below represents the most likely outcomes for 100 incidents of {st.session_state.crime_type[0]} in {st.session_state.city} 12 months after the crime has been recorded.")
+    st.mardown(f"**The graph below represents the most likely outcomes for 100 incidents of {st.session_state.crime_type[0]} in {st.session_state.city} 12 months after the crime has been recorded.**")
     if st.session_state.u_full_add:
         st.pyplot(predict_view_plot)
     
