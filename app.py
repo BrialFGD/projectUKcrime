@@ -34,27 +34,27 @@ with st.sidebar:
     submit_button = st.button(label="Submit")
 
     if submit_button:
-            #get all user data in variables
-            u_lat, u_lon, u_full_add = user_lat_lon_address(user_add)
-            lsoa_df = get_lsoa_data()
-            df, lsoa, city, region = get_LSOA_city_region(lsoa_df,u_lon,u_lat)
-            area_df = create_area_df(region)
-            u_radius = float(u_radius)
+        #get all user data in variables
+        u_lat, u_lon, u_full_add = user_lat_lon_address(user_add)
+        lsoa_df = get_lsoa_data()
+        df, lsoa, city, region = get_LSOA_city_region(lsoa_df,u_lon,u_lat)
+        area_df = create_area_df(region)
+        u_radius = float(u_radius)
         
-            #save all user variables to st_session.
-            st.session_state.u_lat = u_lat
-            st.session_state.u_lon = u_lon
-            st.session_state.u_full_add = u_full_add
-            st.session_state.area_df = area_df
-            st.session_state.lsoa = lsoa
-            st.session_state.city = city
-            st.session_state.region = region
-            st.session_state.u_radius = u_radius
-            st.session_state.crime_type = crime_type
-            st.session_state.selection = selection  
+        #save all user variables to st_session.
+        st.session_state.u_lat = u_lat
+        st.session_state.u_lon = u_lon
+        st.session_state.u_full_add = u_full_add
+        st.session_state.area_df = area_df
+        st.session_state.lsoa = lsoa
+        st.session_state.city = city
+        st.session_state.region = region
+        st.session_state.u_radius = u_radius
+        st.session_state.crime_type = crime_type
+        st.session_state.selection = selection  
             
-            st.sidebar.write("Please check your full address:")
-            st.sidebar.markdown(f"**{st.session_state.u_full_add}**")      
+        st.sidebar.write("Please check your full address:")
+        st.sidebar.markdown(f"**{st.session_state.u_full_add}**")      
 
 page = PAGES[st.session_state.selection]
 page.app()

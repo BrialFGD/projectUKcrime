@@ -8,8 +8,7 @@ import folium
 from streamlit_folium import folium_static
 
 def app():
-    st.title(f'UK {st.session_state.crime_type[0]} crimes heatmaps over last 36 months')
+    st.title(f'{st.session_state.crime_type[0]} crimes heatmaps in {st.session_state.city} over last 36 months')
 
     base_map = heat_map_time(st.session_state.area_df,st.session_state.u_lat,st.session_state.u_lon,user_address=st.session_state.u_full_add,radius = st.session_state.u_radius, crime= st.session_state.crime_type[0])
-
     folium_static(base_map,width=800,height=700)

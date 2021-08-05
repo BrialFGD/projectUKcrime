@@ -1,10 +1,9 @@
 import pandas as pd
 import streamlit as st
 import pickle
-import xgboost as xgb
 import matplotlib as plt
 from projectUKcrime.plotting import plot_crime_probability_bar_chart
-
+import sklearn
 
 def app():
     #Prepare user inputs to prediction model format
@@ -26,7 +25,7 @@ def app():
     #outcome_model.load_model(model_filepath)
     
     #Load the fitted XGBClassifier model - PKL
-    model_filepath = open('raw_data/mini_fit_xgbc.pkl','rb')
+    model_filepath = open('raw_data/big_fit_log.pkl','rb')
     outcome_model = pickle.load(model_filepath)
     model_filepath.close()
     
