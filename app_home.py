@@ -11,9 +11,9 @@ def app():
     
     -**Crime Data** lets you compare trends in crime data in your local area and region.
     
-    -**Crime Outcome Prediction** provides predicted judicial outcome probabilities for a given crime type perpetuated at your address.
-    
-    The UK Crime Tracker was created by Brial, Blair and Andrew at Le Wagon Shaghai.
-    """)
+    -**Crime Outcome Prediction** uses machine learning to predict the most likely outcome of a crime in your chosen area.
+
+    The UK Crime Tracker was created by Brial, Blair and Andrew at Le Wagon Shanghai.
+
     
     
