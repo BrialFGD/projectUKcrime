@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 import pickle
-import xgboost as xgb
+import sklearn
 
 def app():
     #Prepare user inputs to prediction model format
