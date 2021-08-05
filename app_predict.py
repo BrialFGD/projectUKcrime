@@ -43,7 +43,7 @@ def app():
                     'Under investigation':'Case still under investigation'}
 
     predict_view['outcome'] = predict_view['outcome'].map(outcome_dict)
-    predict_view.setindex('outcome')
+    predict_view = predict_view.set_index('outcome')
     
     st.title(f"Here are the probabities of judicial outcomes for a {st.session_state.crime_type[0]} crime located at {st.session_state.u_full_add}")
     
