@@ -34,6 +34,6 @@ def app():
     predict_view['probability'] = predict_view['probability'].apply(lambda x: round(x*100,2))
     predict_view = predict_view.sort_values(['probability'], ascending = False)
     
-    st.write(f"Here are the probabities of judicial outcomes for a {st.session_state.crime_type[0]} crime located at {st.session_state.u_full_add}")
+    st.title(f"Here are the probabities of judicial outcomes for a {st.session_state.crime_type[0]} crime located at {st.session_state.u_full_add}")
     
     st.write(predict_view)
