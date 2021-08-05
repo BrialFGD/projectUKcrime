@@ -4,7 +4,7 @@ setuptools>=26
 twine
 wheel>=0.29
 streamlit
-xgboost=1.4.2
+xgboost-1.4.2
 
 # data science
 numpy
