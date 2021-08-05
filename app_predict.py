@@ -1,43 +1,39 @@
 import pandas as pd
 import streamlit as st
-from projectUKcrime.user_inputs import user_lat_lon_address
-from projectUKcrime.predict import outcome_prediction
+import pickle
+import xgboost as xgb
 
 def app():
-    ## open preidciton module pickle 
-    with st.form(key="my_form"):
-        with st.sidebar:
-            user_add = st.sidebar.text_input(label = 'Please enter an address in England?')
-
-            crime_type_list = ['Anti-social behaviour',
-            'Bicycle theft',
-            'Burglary',
-            'Criminal damage and arson',
-            'Drugs',
-            'Other theft',
-            'Possession of weapons',
-            'Public order',
-            'Robbery',
-            'Shoplifting',
-            'Theft from the person',
-            'Vehicle crime',
-            'Violence and sexual offences']
-   
-            crime_type = st.sidebar.selectbox("Please choose crime type:",crime_type_list)
-
-            submit_button = st.form_submit_button(label="Submit")
-
-            if submit_button:
-                st.sidebar.write("Generating your data")
-                
-    u_lat, u_lon, u_full_add = user_lat_lon_address(user_add)
-    data = [[u_lon, u_lat,crime_type]]
-    data_df = pd.DataFrame(data, columns = ['lon', 'lat','crime'])
-    pred_proba = model.predict_proba(data_df)
-    predict_view = pd.DataFrame(zip(model.classes_,pred_proba[0]))
+    #Prepare user inputs to prediction model format
+    data = [[st.session_state.u_lon,
+             st.session_state.u_lat,
+             st.session_state.crime_type[0]]]
+    X_df = pd.DataFrame(data, columns = ['lon', 'lat','crime'])
+    
+    #load the fitted preprocessor pickle
+    preproc_filepath = 'raw_data/full_fit_preproc.pkl'
+    preproc = pickle.load(open(preproc_filepath,'rb'))
+    
+    #preprocess X_df
+    X_preproc_df = preproc.transform(X_df)
+    
+    #Load the fitted XGBClassifier model - JSON
+    #model_filepath = 'raw_data/mini_fit_xgbc.json'
+    #outcome_model = xgb.Booster()
+    #outcome_model.load_model(model_filepath)
+    
+    #Load the fitted XGBClassifier model - PKL
+    model_filepath = open('raw_data/mini_fit_xgbc.pkl','rb')
+    outcome_model = pickle.load(model_filepath)
+    model_filepath.close()
+    
+    #predict and present data
+    pred_proba = outcome_model.predict_proba(X_preproc_df)
+    predict_view = pd.DataFrame(zip(outcome_model.classes_,pred_proba[0]))
     predict_view.columns = ['outcome','probability']
     predict_view['probability'] = predict_view['probability'].apply(lambda x: round(x*100,2))
     predict_view = predict_view.sort_values(['probability'], ascending = False)
-    predict_view
-    if user_add:
-        st.write(predict_view)
+    
+    st.write(f"Here are the probabities of judicial outcomes for a {st.session_state.crime_type[0]} crime located at {st.session_state.u_full_add}")
+    
+    st.write(predict_view)

@@ -13,6 +13,7 @@ datetime
 statistics
 requests
 streamlit
+pickle
 
 # maps & plots
 folium
