@@ -40,7 +40,7 @@ def app():
                     'no investigation':'No investigation',
                     'case found non-judicial resolution':'Case resolved outside of the courts',
                     'investigation completed, no court proceeding':'No court action',
-                    'Under investigation':'Case still under investigation')
+                    'Under investigation':'Case still under investigation'}
 
     predict_view['outcome'] = predict_view['outcome'].map(outcome_dict)
     predict_view.setindex('outcome')
