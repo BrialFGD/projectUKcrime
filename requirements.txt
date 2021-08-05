@@ -12,14 +12,11 @@ datetime
 statistics
 requests
 streamlit
-xgboost
+sklearn
+pywaffle
 
 # maps & plots
 folium
 seaborn
 matplotlib
 streamlit_folium
-
-# API
-gcsfs
-google-cloud-storage
