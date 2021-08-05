@@ -34,6 +34,17 @@ def app():
     predict_view['probability'] = predict_view['probability'].apply(lambda x: round(x*100,2))
     predict_view = predict_view.sort_values(['probability'], ascending = False)
     
+    outcome_dict = {'investigation completed, pending court action':'Court case in progress',
+                    'court_ruled':'Court judgement issued',
+                    'case proceedings not in the public interest':'Prosecution not in the public interest',
+                    'no investigation':'No investigation',
+                    'case found non-judicial resolution':'Case resolved outside of the courts',
+                    'investigation completed, no court proceeding':'No court action',
+                    'Under investigation':'Case still under investigation')
+
+    predict_view['outcome'] = predict_view['outcome'].map(outcome_dict)
+    predict_view.setindex('outcome')
+    
     st.title(f"Here are the probabities of judicial outcomes for a {st.session_state.crime_type[0]} crime located at {st.session_state.u_full_add}")
     
     st.write(predict_view)
