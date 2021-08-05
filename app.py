@@ -31,9 +31,9 @@ with st.sidebar:
         #move to choose visualization:
         selection = st.sidebar.radio("", list(PAGES.keys()))
 
-        submit_button = st.form_submit_button(label="Submit")
+    submit_button = st.button(label="Submit")
 
-        if submit_button:
+    if submit_button:
             #get all user data in variables
             u_lat, u_lon, u_full_add = user_lat_lon_address(user_add)
             lsoa_df = get_lsoa_data()

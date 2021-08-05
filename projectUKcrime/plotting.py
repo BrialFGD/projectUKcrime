@@ -135,4 +135,16 @@ def plot_relative_crime_rate_bar(area_df, city = None, district = None):
     plt.xlabel("")
     plt.ylabel("")
     return fig
+
+def plot_crime_probability_bar_chart(predict_view):
+    sns.set_style("dark")
+    fig = plt.figure(figsize=(40,20))
+    ax = sns.barplot(data=predict_view,y="outcome",x="probability")
+   
+    plt.xticks(fontsize=40)
+    plt.yticks(fontsize=40)
+    plt.xlim(right=100)
+    plt.xlabel("")
+    plt.ylabel("")
+    return fig
     
