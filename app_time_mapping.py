@@ -13,7 +13,6 @@ def app():
 #user inputs
     with st.form(key="my_form"):
         with st.sidebar:
-   
             user_add = st.sidebar.text_input(label = 'Please enter an address in England?')
             u_radius = st.sidebar.selectbox(
             'Please choose an area size for displaying crime data?',
